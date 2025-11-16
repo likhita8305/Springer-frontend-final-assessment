@@ -10,7 +10,7 @@ import type { MonthSales } from "../data/salesData";
 
 type Props = { data: MonthSales[]; year: number; };
 
-const COLORS = ["#8884d8","#82ca9d","#ffc658","#ff7f50","#8dd1e1","#a4de6c","#d0ed57","#ffc0cb","#b0e0e6","#d8bfd8","#f4a460","#9acd32"];
+const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f50", "#8dd1e1", "#a4de6c", "#d0ed57", "#ffc0cb", "#b0e0e6", "#d8bfd8", "#f4a460", "#9acd32"];
 
 export default function SalesChart({ data, year }: Props) {
   const [chartType, setChartType] = useState("bar");
@@ -31,52 +31,40 @@ export default function SalesChart({ data, year }: Props) {
             type="number"
             placeholder="Min sales"
             value={threshold}
-            onChange={(e)=>setThreshold(e.target.value)}
+            onChange={(e) => setThreshold(e.target.value)}
             className="border px-2 py-1 rounded"
           />
-          {["bar","line","pie"].map(t=>(
-            <button key={t} onClick={()=>setChartType(t)}
-              className={`px-2 py-1 rounded ${chartType===t?"bg-gray-200":""}`}
+          {["bar", "line", "pie"].map(t => (
+            <button key={t} onClick={() => setChartType(t)}
+              className={`px-2 py-1 rounded ${chartType === t ? "bg-gray-200" : ""}`}
             >{t}</button>
           ))}
         </div>
       </div>
 
-      <div style={{height:350}}>
+      <div style={{ height: 350 }}>
         <ResponsiveContainer width="100%" height="100%">
-          {chartType==="bar" && (
+          {chartType === "bar" ? (
             <BarChart data={filtered}>
-              <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey="month"/>
-              <YAxis/>
-              <Tooltip/>
-              <Legend/>
-              <Bar dataKey="sales">
-                {filtered.map((e,i)=><Cell key={i} fill={COLORS[i%COLORS.length]}/>)}
-              </Bar>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="sales" fill="#8884d8" />
             </BarChart>
-          )}
-
-          {chartType==="line" && (
+          ) : (
             <LineChart data={filtered}>
-              <CartesianGrid strokeDasharray="3 3"/>
-              <XAxis dataKey="month"/>
-              <YAxis/>
-              <Tooltip/>
-              <Legend/>
-              <Line type="monotone" dataKey="sales" stroke="#8884d8" strokeWidth={2}/>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line dataKey="sales" stroke="#82ca9d" />
             </LineChart>
           )}
-
-          {chartType==="pie" && (
-            <PieChart>
-              <Tooltip/><Legend/>
-              <Pie data={filtered} dataKey="sales" nameKey="month" outerRadius={120}>
-                {filtered.map((e,i)=><Cell key={i} fill={COLORS[i%COLORS.length]}/>)}
-              </Pie>
-            </PieChart>
-          )}
         </ResponsiveContainer>
+
       </div>
     </div>
   );
